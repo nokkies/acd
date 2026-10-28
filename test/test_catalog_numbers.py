@@ -72,7 +72,7 @@ def test_builtin_table_invariants():
     # the table is the documented size. (Note: two distinct triples may share
     # a catalog value -- e.g. firmware variants of the same device -- which is
     # legitimate and NOT flagged here.)
-    assert len(CATALOG_NUMBERS) == 41, "built-in table size changed: %d" % len(CATALOG_NUMBERS)
+    assert len(CATALOG_NUMBERS) == 47, "built-in table size changed: %d" % len(CATALOG_NUMBERS)
     for key, value in CATALOG_NUMBERS.items():
         assert isinstance(key, tuple) and len(key) == 3, "key must be a 3-tuple: %r" % (key,)
         for component in key:
@@ -83,4 +83,11 @@ def test_builtin_table_invariants():
     # natively without an external catalog.
     assert CATALOG_NUMBERS.get((1, 14, 165)) == "1756-L82E", "real L82E identity missing"
     assert CATALOG_NUMBERS.get((1, 14, 164)) == "1756-L81E", "real L81E identity missing"
-
+    # CompactLogix 1769-L24ER-QBFC1B and its slot / built-in modules. Studio
+    # writes the series letter into CatalogNumber and exports the built-in
+    # I/O as "Embedded". Cross-checked against Rockwell 1769-TD006.
+    assert CATALOG_NUMBERS.get((1, 14, 150)) == "1769-L24ER-QBFC1B"
+    assert CATALOG_NUMBERS.get((1, 7, 67)) == "1769-IQ16/A"
+    assert CATALOG_NUMBERS.get((1, 7, 87)) == "1769-OW8I/B"
+    for embedded in ((1, 7, 64), (1, 10, 164), (1, 109, 71)):
+        assert CATALOG_NUMBERS.get(embedded) == "Embedded"
